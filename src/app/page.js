@@ -1,95 +1,98 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import '../app/styles/style.scss';
+
+const page = () => {
+  const [task, setTask] = useState({ id: Date.now(), name: '' });
+  const [taskList, setTaskList] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [currentTaskId, setCurrentTaskId] = useState(null);
+
+  const handleTaskName = (e) => {
+    setTask({ ...task, name: e.target.value });
+  };
+
+  const AddTask = () => {
+    if (task.name) {
+      if (isUpdate) {
+        // Update
+        const updatedTaskList = taskList.map((t) =>
+          t.id === currentTaskId ? { ...t, name: task.name } : t
+        );
+        setTaskList(updatedTaskList);
+        setIsUpdate(false);
+        setCurrentTaskId(null);
+        setTask({ id: Date.now(), name: '' });
+      } else {
+        // Add
+        setTaskList([...taskList, task]);
+        setTask({ id: Date.now(), name: '' });
+      }
+    } else {
+      alert('Input field is empty');
+    }
+  };
+
+  const DeleteTask = (id) => {
+    console.log('delete is calling');
+    const remainingTask = taskList.filter((task) => task.id !== id);
+    setTaskList(remainingTask);
+  };
+
+  const UpdateTask = (id) => {
+    const taskToUpdate = taskList.find((task) => task.id === id);
+    setTask(taskToUpdate);
+    setIsUpdate(true);
+    setCurrentTaskId(id);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="main">
+      <h1>CRUD APP</h1>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <div className="input-div">
+        <input
+          type="text"
+          value={task.name}
+          onChange={(e) => handleTaskName(e)}
+          placeholder="Add Task"
+        />
+        {isUpdate ? (
+          <button onClick={AddTask} className="change-btn">
+            Change
+          </button>
+        ) : (
+          <button onClick={AddTask} className="add-btn">
+            Add
+          </button>
+        )}
+      </div>
+      <div className='task-list'>
+        {taskList.length > 0 &&
+          taskList.map((task) => (
+            <div key={task.id} className="tasks">
+              <p>{task.name}</p>
+
+              <div className='btn-div'>
+                <button
+                  className="delete-btn"
+                  onClick={() => DeleteTask(task.id)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="update-btn"
+                  onClick={() => UpdateTask(task.id)}
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
-}
+};
+
+export default page;

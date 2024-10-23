@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  width: 50vw;
+  margin-top: 40px;
+  // display: flex;
+  margin-inline: auto;
+  // background-color: pink;
+}
+
+h1 {
+  text-align: center;
+}
+
+.input-div {
+  padding-block: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.input-div > input {
+  height: 35px;
+  width: 400px;
+  padding: 3px 6px;
+  outline: none;
+  font-size: 18px;
+  border-radius: 5px;
+
+  input::placeholder {
+    font-size: 15px;
+    color: #7f8c8d;
+
+    opacity: 1;
+  }
+}
+
+
+
+@mixin button-style($color) {
+  font-size: 16px;
+  width: 80px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: $color;
+  border: none;
+  cursor: pointer;
+}
+
+.add-btn {
+  @include button-style(rgb(101, 227, 105));
+}
+.delete-btn {
+  @include button-style(rgb(251, 106, 95));
+}
+.change-btn {
+  @include button-style(rgb(248, 166, 43));
+}
+.update-btn {
+  @include button-style(rgb(107, 178, 237));
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tasks {
+  // border: 1px solid black;
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+
+  p {
+    font-size: 22px;
+  }
+
+  .btn-div {
+    display: flex;
+    gap: 10px;
+  }
+}
