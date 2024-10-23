@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import '../app/styles/style.scss';
 
-const page = () => {
+const Page = () => {
   const [task, setTask] = useState({ id: Date.now(), name: '' });
   const [taskList, setTaskList] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -95,4 +95,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
